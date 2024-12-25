@@ -40,7 +40,7 @@ function main_ui() {
 function get_kiauh_version() {
   local version
   cd "${KIAUH_SRCDIR}"
-  version="$(git tag -l 'v5*' | tail -1)"
+  version="$(git describe HEAD --always --tags | cut -d "-" -f 1,2)"
   echo "${version}"
 }
 
@@ -92,6 +92,9 @@ function print_klipper_repo() {
 function main_menu() {
   clear && print_header
   main_ui
+
+  ### initialize kiauh.ini
+  init_ini
 
   local action
   while true; do

@@ -142,12 +142,12 @@ function moonraker_setup_dialog() {
 
 function install_moonraker_dependencies() {
   local packages log_name="Moonraker"
-  local package_json="${MOONRAKER_DIR}/scripts/system-dependencies.json"
+  local install_script="${MOONRAKER_DIR}/scripts/install-moonraker.sh"
 
   ### read PKGLIST from official install-script
   status_msg "Reading dependencies..."
   # shellcheck disable=SC2016
-  packages=$(cat $package_json | tr -d ' \n{}' | cut -d "]" -f1 | cut -d":" -f2 | tr -d '"[' | sed 's/,/ /g')
+  packages="$(grep "PKGLIST=" "${install_script}" | cut -d'"' -f2 | sed 's/\${PKGLIST}//g' | tr -d '\n')"
 
   echo "${cyan}${packages}${white}" | tr '[:space:]' '\n'
   read -r -a packages <<< "${packages}"
